@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,6 +23,12 @@ public class EtudantController {
 	public ResponseEntity<List<Etudiant>> getAllStudents()
 	{
 		return new ResponseEntity<List<Etudiant>>(etudiantRepository.findAll(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/saveStudent")
+	public ResponseEntity<Etudiant> saveStudent(@RequestBody Etudiant etudiant) // @RequestBody = "il faut envoyer un objet de type étudiant"
+	{
+		return new ResponseEntity<Etudiant>(etudiantRepository.save(etudiant), HttpStatus.CREATED);
 	}
 
 }
