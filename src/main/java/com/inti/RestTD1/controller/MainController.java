@@ -2,7 +2,7 @@ package com.inti.RestTD1.controller;
 
 import java.util.List;
 
-import com.inti.RestTD1.Utilisateur;
+import com.inti.RestTD1.model.Utilisateur;
 import com.inti.RestTD1.repository.UtilisateurRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

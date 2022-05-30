@@ -1,4 +1,4 @@
-package com.inti.RestTD1;
+package com.inti.RestTD1.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
