@@ -9,10 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,36 +19,30 @@ import lombok.NoArgsConstructor;
 @Table
 @Data
 @NoArgsConstructor @AllArgsConstructor
-public class Etudiant {
-
+public class Professeur {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String nom;
 	private String prenom;
-	private String email;
-	private String telephone;
-	private String anneeEtude;
+	private double salaire;
 	
-	@ManyToOne(mappedBy = "etudiant")
-	List<Ecole> listeEcole;
+
+	@ManyToMany
+	@JoinTable(name = "Professeur_Etudiant",
+	joinColumns = @JoinColumn(name = "idProf"),
+	inverseJoinColumns = @JoinColumn(name = "idEtu"))
+	private List<Etudiant> listeEtudiant;
+
 	
-	public Etudiant(String nom, String prenom, String email, String telephone, String anneeEtude) {
+	public Professeur(String nom, String prenom, double salaire) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
-		this.email = email;
-		this.telephone = telephone;
-		this.anneeEtude = anneeEtude;
+		this.salaire = salaire;
 	}
-	
-	@ManyToMany
-	@JoinTable(name = "Professeur_Etudiant",
-	joinColumns = @JoinColumn(name = "idEtu"),
-	inverseJoinColumns = @JoinColumn(name = "idProf"))
-	@JsonIgnore
-	private List<Professeur> listeProfesseur;
 
-	
+
 	
 }
