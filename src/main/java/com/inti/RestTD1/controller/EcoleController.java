@@ -3,7 +3,9 @@ package com.inti.RestTD1.controller;
 import java.util.List;
 
 import com.inti.RestTD1.model.Ecole;
+import com.inti.RestTD1.model.Etudiant;
 import com.inti.RestTD1.repository.EcoleRepository;
+import com.inti.RestTD1.repository.EtudiantRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,9 @@ public class EcoleController {
 	
 	@Autowired
 	EcoleRepository ecoleRepository;
+	
+	@Autowired
+	EtudiantRepository etudiantRepository;
 	
 	@GetMapping("/schools")
 	public ResponseEntity<List<Ecole>> getAllSchools()
@@ -52,6 +57,15 @@ public class EcoleController {
 	}
 	
 	@PutMapping("/updateStudentWithSchool/{idEtudiant}/{idEcole}")
-	public String updateStudentWithSchool(@RequestBody)
+	public String updateStudentWithSchool(@RequestBody Etudiant etudiant, @PathVariable int idEtudiant, int idEcole)
+	{
+		Ecole ecole = ecoleRepository.getReferenceById(idEcole);
+		
+		etudiant.setEcole(ecole);
+		
+		etudiantRepository.save(etudiant);
+		
+		return "The student : " + etudiant + " has been updated";
+	}
 
 }

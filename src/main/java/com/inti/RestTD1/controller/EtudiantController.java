@@ -61,5 +61,7 @@ public class EtudiantController {
 		etudiantRepository.deleteById(id);
 		return "Student deleted";
 	}
+	
+	
 
 }
