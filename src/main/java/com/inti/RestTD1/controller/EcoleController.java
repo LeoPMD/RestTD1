@@ -2,11 +2,6 @@ package com.inti.RestTD1.controller;
 
 import java.util.List;
 
-import com.inti.RestTD1.model.Ecole;
-import com.inti.RestTD1.model.Etudiant;
-import com.inti.RestTD1.repository.EcoleRepository;
-import com.inti.RestTD1.repository.EtudiantRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inti.RestTD1.model.Ecole;
+import com.inti.RestTD1.repository.EcoleRepository;
+
+
 @RestController
-public class EcoleController {
+public class EcoleController
+{
 	
 	@Autowired
 	EcoleRepository ecoleRepository;
-	
-	@Autowired
-	EtudiantRepository etudiantRepository;
 	
 	@GetMapping("/schools")
 	public ResponseEntity<List<Ecole>> getAllSchools()
@@ -35,18 +32,18 @@ public class EcoleController {
 	}
 	
 	@PostMapping("/saveSchool")
-	public ResponseEntity<Ecole> saveSchool(@RequestBody Ecole ecole) // @RequestBody = "il faut envoyer un objet de type étudiant"
+	public ResponseEntity<Ecole> saveSchool(@RequestBody Ecole ecole)
 	{
 		return new ResponseEntity<Ecole>(ecoleRepository.save(ecole), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/updateSchool/{id}")
-	public String updateSchool(@RequestBody Ecole ecole, @PathVariable int id)
+	public String updateEcole(@RequestBody Ecole ecole, @PathVariable int id)
 	{
-		Ecole e1 = ecoleRepository.getReferenceById(id);
-		ecoleRepository.save(e1);
+//		Ecole e1 = ecoleRepository.getReferenceById(id);
+		ecoleRepository.save(ecole);
 		
-		return "The student : " + e1 + " has been updated";
+		return "The school : " + ecole + " has been updated";
 	}
 	
 	@DeleteMapping("/deleteSchool")
@@ -56,16 +53,10 @@ public class EcoleController {
 		return "School deleted";
 	}
 	
-	@PutMapping("/updateStudentWithSchool/{idEtudiant}/{idEcole}")
-	public String updateStudentWithSchool(@RequestBody Etudiant etudiant, @PathVariable int idEtudiant, int idEcole)
+	@GetMapping("/schoolByEmail/{email}")
+	public Ecole getSchoolByEmail(@PathVariable String email)
 	{
-		Ecole ecole = ecoleRepository.getReferenceById(idEcole);
-		
-		etudiant.setEcole(ecole);
-		
-		etudiantRepository.save(etudiant);
-		
-		return "The student : " + etudiant + " has been updated";
+		return ecoleRepository.findSchoolByEmail(email);
 	}
 
 }

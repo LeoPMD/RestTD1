@@ -2,9 +2,6 @@ package com.inti.RestTD1.controller;
 
 import java.util.List;
 
-import com.inti.RestTD1.model.Professeur;
-import com.inti.RestTD1.repository.ProfesseurRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +14,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class ProfesseurController {
+import com.inti.RestTD1.model.Ecole;
+import com.inti.RestTD1.model.Professeur;
+import com.inti.RestTD1.repository.EcoleRepository;
+import com.inti.RestTD1.repository.ProfesseurRepository;
 
+@RestController
+public class ProfesseurController
+{
+	
+	@Autowired
+	EcoleRepository ecoleRepository;
+	
 	@Autowired
 	ProfesseurRepository professeurRepository;
 	
@@ -30,29 +36,18 @@ public class ProfesseurController {
 	}
 	
 	@PostMapping("/saveProfesseur")
-	public ResponseEntity<Professeur> saveProfesseur(@RequestBody Professeur prof) // @RequestBody = "il faut envoyer un objet de type étudiant"
+	public ResponseEntity<Professeur> saveProfesseur(@RequestBody Professeur prof)
 	{
 		return new ResponseEntity<Professeur>(professeurRepository.save(prof), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/updateProfesseur/{id}")
-	public String updateProfesseur(@RequestBody Professeur professeur, @PathVariable int id)
+	public String updateProfesseur(@RequestBody Professeur prof, @PathVariable int id)
 	{
-		Professeur p1 = professeurRepository.getReferenceById(id);
+//		Ecole e1 = ecoleRepository.getReferenceById(id);
+		professeurRepository.save(prof);
 		
-		if(!p1.getNom().equals(professeur.getNom()))
-		{
-			p1.setNom(professeur.getNom());
-		}
-		
-		if(!p1.getPrenom().equals(professeur.getPrenom()) && professeur.getPrenom() != null)
-		{
-			p1.setPrenom(professeur.getPrenom());
-		}
-		
-		professeurRepository.save(p1);
-		
-		return "The professeur : " + p1 + " has been updated";
+		return "The school : " + prof + " has been updated";
 	}
 	
 	@DeleteMapping("/deleteProfesseur")
@@ -61,5 +56,5 @@ public class ProfesseurController {
 		professeurRepository.deleteById(id);
 		return "Professeur deleted";
 	}
-	
+
 }

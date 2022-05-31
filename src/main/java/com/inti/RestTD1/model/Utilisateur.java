@@ -16,12 +16,14 @@ import lombok.RequiredArgsConstructor;
 @Table
 @Data
 @NoArgsConstructor @RequiredArgsConstructor @AllArgsConstructor
-public class Utilisateur {
-	
+public class Utilisateur
+{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private @NonNull String login;
 	private @NonNull String mdp;
+	
+	
 
 }

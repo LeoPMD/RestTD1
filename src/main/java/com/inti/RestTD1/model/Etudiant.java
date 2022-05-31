@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.inti.RestTD1.model.Ecole;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +24,8 @@ import lombok.NoArgsConstructor;
 @Table
 @Data
 @NoArgsConstructor @AllArgsConstructor
-public class Etudiant {
-
+public class Etudiant
+{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -33,10 +35,20 @@ public class Etudiant {
 	private String telephone;
 	private String anneeEtude;
 	
-	@ManyToOne(mappedBy = "etudiant")
-	List<Ecole> listeEcole;
+	@ManyToOne
+	@JoinColumn(name = "idEcole")
+	@JsonIgnore
+	Ecole ecole;
 	
-	public Etudiant(String nom, String prenom, String email, String telephone, String anneeEtude) {
+	@ManyToMany
+	@JoinTable(name = "Professeur_Etudiant",
+				joinColumns = @JoinColumn(name = "idEtu"),
+				inverseJoinColumns = @JoinColumn(name = "idProf"))
+	@JsonIgnore
+	List<Professeur> listprProfesseurs;
+	
+	public Etudiant(String nom, String prenom, String email, String telephone, String anneeEtude)
+	{
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
@@ -44,14 +56,13 @@ public class Etudiant {
 		this.telephone = telephone;
 		this.anneeEtude = anneeEtude;
 	}
-	
-	@ManyToMany
-	@JoinTable(name = "Professeur_Etudiant",
-	joinColumns = @JoinColumn(name = "idEtu"),
-	inverseJoinColumns = @JoinColumn(name = "idProf"))
-	@JsonIgnore
-	private List<Professeur> listeProfesseur;
 
+	@Override
+	public String toString()
+	{
+		return "Etudiant [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", telephone="
+				+ telephone + ", anneeEtude=" + anneeEtude + "]";
+	}
 	
 	
 }
